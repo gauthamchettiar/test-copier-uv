@@ -1,0 +1,185 @@
+[project]
+name = "test_uv"
+version = "0.1.0"
+description = "A short description of the project."
+readme = "README.md"
+license = "MIT"
+authors = [
+    { name = "Gautham Chettiar", email = "gauthamchettiar@gmail.com" }
+]
+requires-python = ">= 3.13"
+dependencies = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+target-version = "py313"
+line-length = 90
+show-fixes = true
+respect-gitignore = true
+
+[tool.ruff.lint]
+select = [
+    "E",      # pycodestyle errors (replaces pycodestyle)
+    "W",      # pycodestyle warnings (replaces pycodestyle)
+    "F",      # Pyflakes (replaces Pyflakes)
+    "I",      # isort (replaces isort)
+    "N",      # pep8-naming (replaces pep8-naming)
+    "D",      # pydocstyle (replaces pydocstyle)
+    "UP",     # pyupgrade (replaces pyupgrade)
+    "B",      # flake8-bugbear (replaces flake8-bugbear)
+    "S",      # flake8-bandit security checks (replaces bandit partially)
+    "C4",     # flake8-comprehensions (replaces flake8-comprehensions)
+    "DTZ",    # flake8-datetimez - enforce timezone-aware datetimes
+    "T10",    # flake8-debugger - detect debugger imports
+    "EM",     # flake8-errmsg - enforce better error messages
+    "ISC",    # flake8-implicit-str-concat - prevent implicit string concatenation
+    "ICN",    # flake8-import-conventions - enforce import conventions
+    "PIE",    # flake8-pie - misc lints (replaces flake8-pie)
+    "PT",     # flake8-pytest-style - pytest best practices
+    "Q",      # flake8-quotes - enforce consistent quotes
+    "RET",    # flake8-return - enforce return statement best practices
+    "SIM",    # flake8-simplify - simplify code (replaces flake8-simplify)
+    "TID",    # flake8-tidy-imports - enforce organized imports
+    "ARG",    # flake8-unused-arguments - detect unused arguments
+    "PTH",    # flake8-use-pathlib - prefer pathlib over os.path
+    "PL",     # Pylint (replaces Pylint)
+    "PERF",   # Perflint - performance anti-patterns
+    "RUF",    # Ruff-specific rules
+]
+ignore = [
+    "D100",     # missing module docstring
+    "D104",     # missing package docstring
+    "D203",     # one-blank-line-before-class (conflicts with D211)
+    "D213",     # multi-line-summary-second-line (conflicts with D212)
+    "COM812",   # missing trailing comma in a collection
+    "ISC001",   # implicit string concatenation (conflicts with formatter)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = [
+    "S101",   # Use of assert detected
+    "D",      # pydocstyle
+    "PLR0913",  # Too many arguments in function definition
+]
+"__init__.py" = ["F401"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-sort-within-sections = true
+known-first-party = ["test_uv"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.pytest.ini_options]
+minversion = "9.0"
+addopts = "-ra -q"
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+
+# when you add markers here, remember to
+#   add below in poe test-unit task as well
+markers = [
+    "integration: integration tests",
+]
+
+[tool.pyright]
+include = ["src"]
+
+pythonVersion = "3.13"
+typeCheckingMode = "strict"
+
+reportMissingImports = true
+reportMissingTypeStubs = false
+reportUnusedVariable = true
+reportUnusedFunction = true
+
+venvPath = "."
+venv = ".venv"
+
+[dependency-groups]
+dev = [
+    "bandit>=1.9.3",
+    "detect-secrets>=1.5.0",
+    "git-changelog>=2.7.1",
+    "pip-audit>=2.10.0",
+    "poethepoet>=0.41.0",
+    "pre-commit>=4.5.1",
+    "pyright>=1.1.408",
+    "pytest>=9.0.2",
+    "pytest-cov>=7.0.0",
+    "ruff>=0.15.0",
+]
+docs = [
+    "mkdocstrings[python]>=1.0.2",
+    "zensical>=0.0.21",
+]
+
+[tool.poe]
+executor.type = "uv"
+
+[tool.poe.tasks]
+# Linting, Formatting and Type Checking Tasks
+lint = {cmd =  "ruff check src tests", help = "Run ruff lint checks"}
+lint-fix = {cmd = "ruff check src tests --fix", help = "Fix ruff lint issues"}
+
+format = {cmd = "ruff format src tests", help = "Format code using ruff"}
+format-check = {cmd = "ruff format src tests --check", help = "Check code formatting using ruff"}
+
+type-check = {cmd = "pyright", help = "Run type checking using pyright"}
+
+# Security Tasks
+security-bandit = {cmd = "bandit -r src -ll", help = "Run bandit security checks"}
+security-audit = {cmd = "pip-audit", help = "Run pip-audit security checks"}
+
+# Documentation Tasks
+docs-serve = {cmd = "zensical serve", help = "Serve documentation locally"}
+docs-build = {cmd = "zensical build", help = "Build documentation site"}
+
+# Testing Tasks
+test-unit = {cmd = "pytest -m 'not integration'", help = "Run unit tests"} # all unmarked tests
+test-integration = {cmd = "pytest -m 'integration'", help = "Run integration tests"}
+
+test-cov-check = {cmd = "pytest --cov=test_uv --cov-report=html:htmlcov --cov-report=term-missing --cov-fail-under=80", help = "Run tests with coverage"}
+test-cov-gen = {cmd = "pytest --cov=test_uv --cov-report=html:htmlcov --cov-report=term-missing", help = "Run tests to generate coverage report"}
+
+# Multi Version Testing
+test-py313 = { cmd = "pytest", executor = { isolated = true, python = "3.13" } }
+test-pyall = { parallel = ["test-py313"] }
+
+# Aggregate Tasks
+clean = {cmd = "rm -rf build dist .pytest_cache .mypy_cache .ruff_cache .pytest_cache .tox .venv site/", help = "Clean build artifacts"}
+pre-commit = {sequence = ["format", "lint-fix"], help = "Auto-fix formatting and lint issues (for pre-commit)"}
+check = {sequence = ["lint", "format-check", "type-check", "test-cov-check"], help = "Run all checks (linting, formatting, type checking)"}
+fix = {sequence = ["format", "lint-fix"], help = "Fix linting and formatting issues"}
+security = {sequence = ["security-bandit", "security-audit"], help = "Run all security checks"}
+docs = {sequence = ["docs-build"], help = "Build the documentation site"}
+ci = {sequence = ["check", "security", "docs-build"], help = "Run all checks and tests for CI"}
+gen = {cmd = "git-changelog --in-place --output CHANGELOG.md", help = "Generate changelog from git commits"}
+
+[tool.poe.tasks.release]
+help = "Create a release by tagging and generating changelog"
+args = [
+    { name = "version", positional = true, required = true }
+]
+sequence = [
+    { cmd = "git diff --exit-code", help = "Ensure there are no uncommitted changes" },
+    { cmd = "git-changelog --bump ${version} --in-place --output CHANGELOG.md", help = "Generate changelog" },
+    { cmd = "git add CHANGELOG.md", help = "Add changelog to git" },
+    { cmd = "git commit -m \"docs: update changelog for ${version}\"", help = "Commit changelog changes" },
+    { cmd = "git tag -a v${version} -m \"Release v${version}\"", help = "Create git tag" },
+]

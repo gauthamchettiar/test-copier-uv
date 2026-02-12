@@ -1,0 +1,123 @@
+# Contributing
+
+Thanks for helping improve **test-uv**. Below you can find guidelines and tips for contributing to the project, including how to set up a development environment, run tests, and generate documentation.
+
+
+## Developer Quick Start
+
+### Prerequisites
+
+- Python 3.13+
+- [`uv`](https://docs.astral.sh/uv/)
+
+### Setup
+```bash title="Install Dependencies"
+uv sync --all-groups
+```
+
+**NOTE**:
+- `--all-groups` installs both the `dev` and `docs` dependency groups.
+- If you only want the development tooling (no docs), you can use:
+    ```bash
+    uv sync --group dev
+    ```
+
+### Tasks
+All common development tasks like linting, testing, and documentation are defined as [poethepoet](https://github.com/nat-n/poethepoet) tasks in `pyproject.toml`.
+
+Here' a quick reference of all available tasks:
+
+| Task         | Description                                                                  |
+|--------------|------------------------------------------------------------------------------|
+| `clean`      | Clean build/test caches and generated artifacts                              |
+| `fix`        | Run ruff formatting + lint fixes                                             |
+| `check`      | Run ruff (lint + format check), pyright (type-check), and pytest (unit tests)|
+| `security`   | Run bandit and pip-audit (security checks)                                   |
+| `docs`       | Run zensical (documentation)                                                 |
+| `gen`        | Run git-changelog (regenerate CHANGELOG.md from git history)                 |
+| `test-pyall` | Run pytest suite across all supported Python versions                        |
+| `pre-commit` | Run pre-commit hooks on all files (useful to test after pre-commit failure)  |
+| `ci`         | Full suite intended for CI (useful to test after CI failure)                 |
+| `release`    | Generate changelog and cut a new release tag                                 |
+
+```bash title="Run Lint, Type-Check, and Unit Tests"
+uv run poe check
+# or you can install poethepoet and run:
+uv tool install poethepoet
+poe check
+```
+
+### Testing
+You should most probably be running `poe check` task, which includes unit tests. In order to run full test suite you can run -
+
+```bash title="Run Full Test Suite"
+poe test-pyall
+```
+
+This will spawn a separate environment for each supported Python version and run the tests in parallel.
+
+If you want to run tests for a specific Python version, you can run:
+
+```bash title="Run Tests for Specific Python Versions"
+poe test-py313
+```
+
+### Documentation
+Documentation is built using [zensical](https://zensical.org/docs). To build docs locally, run:
+
+```bash title="Build Documentation"
+uv sync --group docs
+uv run poe docs
+```
+
+To serve docs locally with live reload:
+
+```bash title="Serve Documentation Locally"
+uv run poe docs-serve
+```
+
+This will start a local server at `http://localhost:8000` where you can view the documentation. Any changes to the docs will trigger an automatic rebuild and refresh in the browser.
+
+### Developer Workflow
+
+Here's how a typical development workflow might look like:
+
+1. Install dependencies:
+    ```bash
+    uv sync --all-groups
+    ```
+2. Install [pre-commit](https://pre-commit.com/) hooks (optional, but recommended):
+    ```bash
+    uv run pre-commit install
+    ```
+3. Make your change.
+4. Auto-fix formatting + lint issues:
+    ```bash
+    uv run poe fix
+    ```
+5. Run the standard checks:
+    ```bash
+    uv run poe check
+    ```
+6. If your change touches docs, run:
+    ```bash
+    uv run poe docs-build
+    ```
+7. If your change might affect integration behavior, run:
+    ```bash
+    uv run poe test-integration
+    ```
+8. If you have added a new dependency, make sure to run:
+    ```bash
+    uv sync --all-groups
+    uv run poe security
+    ```
+9. If you are happy with changes, cut a new release tag -
+    ```bash title="Cut a New Release Tag"
+    poe release 0.1.3
+    ```
+
+
+## Code of conduct
+
+By participating, you agree to follow the Code of Conduct in [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).

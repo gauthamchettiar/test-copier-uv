@@ -1,0 +1,11 @@
+# Changes here will be overwritten by Copier
+_commit: 369a3d8940c71f1b8f7cb72994edbf4db1c55bda
+_src_path: /private/var/folders/01/nglx85yd2fj1t15k_711f0q00000gn/T/copier._vcs.clone.wqy87b5e
+author_email: gauthamchettiar@gmail.com
+author_name: Gautham Chettiar
+license: MIT
+project_description: A short description of the project.
+project_name: test-uv
+project_slug: test_uv
+min_python_version: '3.13'
+year: '2026'

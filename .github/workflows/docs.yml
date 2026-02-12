@@ -27,3 +27,5 @@ jobs:
           path: public
       - uses: actions/deploy-pages@v4
         id: deployment
+        with:
+          enablement: true

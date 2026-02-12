@@ -44,4 +44,4 @@ jobs:
         run: uv sync --all-groups
 
       - name: Run tests
-        run: uv run poe test
+        run: uv run pytest

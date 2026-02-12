@@ -1,5 +1,5 @@
 [project]
-name = "test_uv"
+name = "test_copier_uv"
 version = "0.1.0"
 description = "A short description of the project."
 readme = "README.md"
@@ -7,7 +7,7 @@ license = "MIT"
 authors = [
     { name = "Gautham Chettiar", email = "gauthamchettiar@gmail.com" }
 ]
-requires-python = ">= 3.13"
+requires-python = ">= 3.10"
 dependencies = []
 
 [build-system]
@@ -15,7 +15,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.ruff]
-target-version = "py313"
+target-version = "py310"
 line-length = 90
 show-fixes = true
 respect-gitignore = true
@@ -69,7 +69,7 @@ ignore = [
 [tool.ruff.lint.isort]
 combine-as-imports = true
 force-sort-within-sections = true
-known-first-party = ["test_uv"]
+known-first-party = ["test_copier_uv"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
@@ -100,7 +100,7 @@ markers = [
 [tool.pyright]
 include = ["src"]
 
-pythonVersion = "3.13"
+pythonVersion = "3.10"
 typeCheckingMode = "strict"
 
 reportMissingImports = true
@@ -125,8 +125,8 @@ dev = [
     "ruff>=0.15.0",
 ]
 docs = [
-    "mkdocstrings[python]>=1.0.2",
-    "zensical>=0.0.21",
+    "mkdocstrings[python]>=1.0.3",
+    "zensical>=0.0.23",
 ]
 
 [tool.poe]
@@ -154,12 +154,15 @@ docs-build = {cmd = "zensical build", help = "Build documentation site"}
 test-unit = {cmd = "pytest -m 'not integration'", help = "Run unit tests"} # all unmarked tests
 test-integration = {cmd = "pytest -m 'integration'", help = "Run integration tests"}
 
-test-cov-check = {cmd = "pytest --cov=test_uv --cov-report=html:htmlcov --cov-report=term-missing --cov-fail-under=80", help = "Run tests with coverage"}
-test-cov-gen = {cmd = "pytest --cov=test_uv --cov-report=html:htmlcov --cov-report=term-missing", help = "Run tests to generate coverage report"}
+test-cov-check = {cmd = "pytest --cov=test_copier_uv --cov-report=html:htmlcov --cov-report=term-missing --cov-fail-under=80", help = "Run tests with coverage"}
+test-cov-gen = {cmd = "pytest --cov=test_copier_uv --cov-report=html:htmlcov --cov-report=term-missing", help = "Run tests to generate coverage report"}
 
 # Multi Version Testing
+test-py310 = { cmd = "pytest", executor = { isolated = true, python = "3.10" } }
+test-py311 = { cmd = "pytest", executor = { isolated = true, python = "3.11" } }
+test-py312 = { cmd = "pytest", executor = { isolated = true, python = "3.12" } }
 test-py313 = { cmd = "pytest", executor = { isolated = true, python = "3.13" } }
-test-pyall = { parallel = ["test-py313"] }
+test-pyall = { parallel = ["test-py310","test-py311","test-py312","test-py313"] }
 
 # Aggregate Tasks
 clean = {cmd = "rm -rf build dist .pytest_cache .mypy_cache .ruff_cache .pytest_cache .tox .venv site/", help = "Clean build artifacts"}

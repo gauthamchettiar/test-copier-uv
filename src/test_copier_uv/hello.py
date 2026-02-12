@@ -8,6 +8,6 @@ def hello(name: str = "World") -> str:
         name: The name to greet.
 
     Returns:
-        str: A greeting message from the test_uv package.
+        str: A greeting message from the test_copier_uv package.
     """
-    return f"Hello, {name} from test_uv!"
+    return f"Hello, {name} from test_copier_uv!"

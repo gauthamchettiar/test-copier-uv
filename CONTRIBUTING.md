@@ -1,13 +1,13 @@
 # Contributing
 
-Thanks for helping improve **test-uv**. Below you can find guidelines and tips for contributing to the project, including how to set up a development environment, run tests, and generate documentation.
+Thanks for helping improve **test-copier-uv**. Below you can find guidelines and tips for contributing to the project, including how to set up a development environment, run tests, and generate documentation.
 
 
 ## Developer Quick Start
 
 ### Prerequisites
 
-- Python 3.13+
+- Python 3.10+
 - [`uv`](https://docs.astral.sh/uv/)
 
 ### Setup
@@ -59,6 +59,9 @@ This will spawn a separate environment for each supported Python version and run
 If you want to run tests for a specific Python version, you can run:
 
 ```bash title="Run Tests for Specific Python Versions"
+poe test-py310
+poe test-py311
+poe test-py312
 poe test-py313
 ```
 

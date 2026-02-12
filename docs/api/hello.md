@@ -1,4 +1,4 @@
-::: test_uv.hello
+::: test_copier_uv.hello
     options:
       members: true
       inherited_members: true

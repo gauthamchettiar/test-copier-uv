@@ -1,6 +1,6 @@
 [project]
-site_name = "test-uv"
-site_url = "https://Gautham Chettiar.github.io/test_uv"
+site_name = "test-copier-uv"
+site_url = "https://gauthamchettiar.github.io/test_copier_uv"
 docs_dir = "docs"
 site_dir = "public"
 nav = [

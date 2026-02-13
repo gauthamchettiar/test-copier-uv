@@ -9,7 +9,7 @@
 <!-- Project header -->
 <div align="center">
   <a href="https://github.com/gauthamchettiar/test-copier-uv">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="https://raw.githubusercontent.com/gauthamchettiar/test-copier-uv/main/images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">test-copier-uv</h3>

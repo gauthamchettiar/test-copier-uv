@@ -3,7 +3,7 @@
 ![Docs](https://github.com/gauthamchettiar/test-copier-uv/actions/workflows/docs.yml/badge.svg)
 [![Coverage](https://codecov.io/gh/gauthamchettiar/test-copier-uv/branch/main/graph/badge.svg)](https://codecov.io/gh/gauthamchettiar/test-copier-uv)
 ![Python](https://img.shields.io/badge/python-3.10%2C%203.11%2C%203.12%2C%203.13-blue)
-[![Issues](https://img.shields.io/github/issues/gauthamchettiar/test-copier-uv.svg)][https://github.com/gauthamchettiar/test-copier-uv/issues]
+[![Issues](https://img.shields.io/github/issues/gauthamchettiar/test-copier-uv.svg)](https://github.com/gauthamchettiar/test-copier-uv/issues)
 [![MIT License](https://img.shields.io/github/license/gauthamchettiar/test-copier-uv.svg)](https://github.com/gauthamchettiar/test-copier-uv/blob/master/LICENSE)
 
 <!-- Project header -->
@@ -32,19 +32,15 @@
 
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
-
-_This is an example of how to list things you need to use the software._
-e.g: 
+<!-- prerequisites marker start -->
 - [uv](https://docs.astral.sh/uv/)
+<!-- prerequisites marker end -->
 
 ### Installation
-
-_Below is an example of how you can instruct your audience on installing and setting up your app._
-
+<!-- installation marker start -->
 1. Clone the repo
    ```sh
    git clone https://github.com/gauthamchettiar/test-copier-uv.git
@@ -57,12 +53,14 @@ _Below is an example of how you can instruct your audience on installing and set
     ```sh
     uv run python -c "print('hello world!')"
     ```
+<!-- installation marker end -->
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+<!-- usage marker start -->
+<!-- Use this space to explain how to use your project -->
+<!-- usage marker end -->
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -78,7 +76,7 @@ _Features you have planned to be added to project_
 
 ## License
 
-Distributed under the Unlicense License. See [LICENSE](LICENSE) for more information.
+Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

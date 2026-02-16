@@ -1,6 +1,6 @@
 [project]
 name = "test_copier_uv"
-version = "v0.1.1"
+version = "0.1.1"
 description = "A short description of the project."
 readme = "README.md"
 license = "MIT"

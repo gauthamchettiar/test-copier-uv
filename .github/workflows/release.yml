@@ -56,11 +56,7 @@ jobs:
             echo "Error: Invalid semantic version format"
             exit 1
           fi
-      - name: Check CI workflow status for current commit
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          COMMIT_SHA=$( github )
+
       - uses: astral-sh/setup-uv@v7
 
       - name: Install dependencies

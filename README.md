@@ -6,6 +6,7 @@
 [![Issues](https://img.shields.io/github/issues/gauthamchettiar/test-copier-uv.svg)](https://github.com/gauthamchettiar/test-copier-uv/issues)
 [![MIT License](https://img.shields.io/github/license/gauthamchettiar/test-copier-uv.svg)](https://github.com/gauthamchettiar/test-copier-uv/blob/master/LICENSE)
 
+Adding a nonsense, line.
 <!-- Project header -->
 <div align="center">
   <a href="https://github.com/gauthamchettiar/test-copier-uv">

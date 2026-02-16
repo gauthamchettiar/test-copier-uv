@@ -1,0 +1,20 @@
+{
+  "name": "test_copier_uv - Codespace",
+  "image": "mcr.microsoft.com/devcontainers/python:0-3.13",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "charliermarsh.ruff",
+        "bungcip.better-toml"
+      ]
+    }
+  },
+  "postCreateCommand": "python -m pip install --upgrade pip && python -m pip install uv && uv sync --all-groups && uv run pre-commit install || true",
+  "settings": {
+    "python.formatting.provider": "ruff",
+    "python.analysis.typeCheckingMode": "basic"
+  },
+  "remoteUser": "vscode"
+}

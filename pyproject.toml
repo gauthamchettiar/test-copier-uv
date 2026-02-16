@@ -9,6 +9,25 @@ authors = [
 ]
 requires-python = ">= 3.13"
 dependencies = []
+keywords = []
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://github.com/gauthamchettiar/test-copier-uv"
+Repository = "https://github.com/gauthamchettiar/test-copier-uv"
+Documentation = "https://gauthamchettiar.github.io/test-copier-uv"
+Changelog = "https://github.com/gauthamchettiar/test-copier-uv/blob/main/CHANGELOG.md"
+Issues = "https://github.com/gauthamchettiar/test-copier-uv/issues"
 
 [build-system]
 requires = ["hatchling"]
@@ -19,6 +38,12 @@ target-version = "py313"
 line-length = 90
 show-fixes = true
 respect-gitignore = true
+extend-exclude = [
+    "build",
+    "dist",
+    ".venv",
+    "*.pypi"
+]
 
 [tool.ruff.lint]
 select = [
@@ -85,11 +110,15 @@ line-ending = "auto"
 
 [tool.pytest.ini_options]
 minversion = "9.0"
-addopts = "-ra -q"
+addopts = "-ra -q --strict-markers"
 testpaths = ["tests"]
 python_files = "test_*.py"
 python_classes = "Test*"
 python_functions = "test_*"
+xfail_strict = true
+filterwarnings = [
+    "error",
+]
 
 # when you add markers here, remember to
 #   add below in poe test-unit task as well
@@ -109,7 +138,7 @@ sections = ["build", "chore", "ci", "deps", "docs", "feat", "fix", "perf", "refa
 bump = "auto"
 
 [tool.pyright]
-include = ["src"]
+include = ["src", "tests"]
 
 pythonVersion = "3.13"
 typeCheckingMode = "strict"
@@ -118,6 +147,9 @@ reportMissingImports = true
 reportMissingTypeStubs = false
 reportUnusedVariable = true
 reportUnusedFunction = true
+reportUnnecessaryTypeIgnoreComment = true
+reportPrivateUsage = true
+reportConstantRedefinition = true
 
 venvPath = "."
 venv = ".venv"
@@ -125,8 +157,6 @@ venv = ".venv"
 [dependency-groups]
 dev = [
     "bandit>=1.9.3",
-    "conventional-commit>=0.2.8",
-    "detect-secrets>=1.5.0",
     "pip-audit>=2.10.0",
     "poethepoet>=0.41.0",
     "pre-commit>=4.5.1",
@@ -221,6 +251,10 @@ executor = { isolated = true, python = "3.13" }
 [tool.poe.tasks.clean]
 help = "Clean project directories using inline python"
 cmd = "python -c \"from poethepoet.scripts import rm; rm('.pytest_cache', '__pycache__', 'build', 'dist', 'htmlcov', '.mypy_cache', '.ruff_cache', 'public')\""
+
+[tools.poe.tasks.setup]
+help = "Set up the development environment"
+cmd = "uv run --with pre-commit pre-commit install --install-hooks"
 
 # Agregate tasks
 [tool.poe.tasks.check]

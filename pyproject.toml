@@ -1,0 +1,248 @@
+[project]
+name = "test_copier_uv"
+version = "0.1.0"
+description = "A short description of the project."
+readme = "README.md"
+license = "MIT"
+authors = [
+    { name = "Gautham Chettiar", email = "gauthamchettiar@gmail.com" }
+]
+requires-python = ">= 3.13"
+dependencies = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+target-version = "py313"
+line-length = 90
+show-fixes = true
+respect-gitignore = true
+
+[tool.ruff.lint]
+select = [
+    "E",      # pycodestyle errors (replaces pycodestyle)
+    "W",      # pycodestyle warnings (replaces pycodestyle)
+    "F",      # Pyflakes (replaces Pyflakes)
+    "I",      # isort (replaces isort)
+    "N",      # pep8-naming (replaces pep8-naming)
+    "D",      # pydocstyle (replaces pydocstyle)
+    "UP",     # pyupgrade (replaces pyupgrade)
+    "B",      # flake8-bugbear (replaces flake8-bugbear)
+    "S",      # flake8-bandit security checks (replaces bandit partially)
+    "C4",     # flake8-comprehensions (replaces flake8-comprehensions)
+    "DTZ",    # flake8-datetimez - enforce timezone-aware datetimes
+    "T10",    # flake8-debugger - detect debugger imports
+    "EM",     # flake8-errmsg - enforce better error messages
+    "ISC",    # flake8-implicit-str-concat - prevent implicit string concatenation
+    "ICN",    # flake8-import-conventions - enforce import conventions
+    "PIE",    # flake8-pie - misc lints (replaces flake8-pie)
+    "PT",     # flake8-pytest-style - pytest best practices
+    "Q",      # flake8-quotes - enforce consistent quotes
+    "RET",    # flake8-return - enforce return statement best practices
+    "SIM",    # flake8-simplify - simplify code (replaces flake8-simplify)
+    "TID",    # flake8-tidy-imports - enforce organized imports
+    "ARG",    # flake8-unused-arguments - detect unused arguments
+    "PTH",    # flake8-use-pathlib - prefer pathlib over os.path
+    "PL",     # Pylint (replaces Pylint)
+    "PERF",   # Perflint - performance anti-patterns
+    "RUF",    # Ruff-specific rules
+]
+ignore = [
+    "D100",     # missing module docstring
+    "D104",     # missing package docstring
+    "D203",     # one-blank-line-before-class (conflicts with D211)
+    "D213",     # multi-line-summary-second-line (conflicts with D212)
+    "COM812",   # missing trailing comma in a collection
+    "ISC001",   # implicit string concatenation (conflicts with formatter)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = [
+    "S101",   # Use of assert detected
+    "D",      # pydocstyle
+    "PLR0913",  # Too many arguments in function definition
+]
+"__init__.py" = ["F401"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-sort-within-sections = true
+known-first-party = ["test_copier_uv"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.pytest.ini_options]
+minversion = "9.0"
+addopts = "-ra -q"
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+
+# when you add markers here, remember to
+#   add below in poe test-unit task as well
+markers = [
+    "integration: integration tests",
+]
+
+[tool.git-changelog]
+convention = "angular"
+template = "keepachangelog"
+marker-line = "<!-- insertion marker -->"
+output = "CHANGELOG.md"
+in-place = true
+parse-trailers = true
+parse-refs = false
+sections = ["feat", "fix", "refactor", "perf", "build", "deps"]
+bump = "auto"
+
+[tool.pyright]
+include = ["src"]
+
+pythonVersion = "3.13"
+typeCheckingMode = "strict"
+
+reportMissingImports = true
+reportMissingTypeStubs = false
+reportUnusedVariable = true
+reportUnusedFunction = true
+
+venvPath = "."
+venv = ".venv"
+
+[dependency-groups]
+dev = [
+    "bandit>=1.9.3",
+    "detect-secrets>=1.5.0",
+    "pip-audit>=2.10.0",
+    "poethepoet>=0.41.0",
+    "pre-commit>=4.5.1",
+    "pyright>=1.1.408",
+    "pytest>=9.0.2",
+    "pytest-cov>=7.0.0",
+    "ruff>=0.15.0",
+]
+docs = [
+    "mkdocstrings[python]>=1.0.3",
+    "zensical>=0.0.23",
+]
+
+[tool.poe]
+executor.type = "uv"
+
+
+# Linting, formatting and type checking tasks
+[tool.poe.tasks.lint]
+cmd = "ruff check ${target_dir}"
+help = "Run ruff lint checks"
+args = { target_dir = { multiple = true, default = "src tests", positional = true }}
+
+[tool.poe.tasks.lint-fix]
+cmd = "ruff check ${target_dir} --fix"
+help = "Fix ruff lint issues"
+args = { target_dir = { multiple = true, default = "src tests", positional = true }}
+
+[tool.poe.tasks.format]
+cmd = "ruff format ${target_dir}"
+help = "Format code using ruff"
+args = { target_dir = { multiple = true, default = "src tests", positional = true }}
+
+[tool.poe.tasks.format-check]
+cmd = "ruff format ${target_dir} --check"
+help = "Check code formatting using ruff"
+args = { target_dir = { multiple = true, default = "src tests", positional = true }}
+
+[tool.poe.tasks.type-check]
+cmd = "pyright ${target_dir}"
+help = "Run type checking using pyright"
+args = { target_dir = { multiple = true, default = "src tests", positional = true }}
+
+# Security Tasks
+[tool.poe.tasks.security-bandit]
+cmd = "bandit -r src -ll"
+help = "Run bandit security checks"
+
+[tool.poe.tasks.security-audit]
+cmd = "pip-audit"
+help = "Run pip-audit security checks"
+
+# Documentation Tasks
+[tool.poe.tasks.docs-serve]
+cmd = "uv run --group docs zensical serve"
+help = "Serve documentation locally"
+
+[tool.poe.tasks.docs-build]
+cmd = "uv run --group docs zensical build"
+help = "Build documentation site"
+
+[tool.poe.tasks.docs-clean]
+help = "Clean documentation build artifacts"
+cmd = "uv run --group dev python -c \"from poethepoet.scripts import rm; rm('public')\""
+
+[tool.poe.tasks.test-unit]
+cmd = "pytest -m 'not integration'"
+help = "Run unit tests"
+
+[tool.poe.tasks.test-integration]
+cmd = "pytest -m 'integration'"
+help = "Run integration tests"
+
+[tool.poe.tasks.test]
+cmd = "pytest"
+help = "Run all tests"
+
+[tool.poe.tasks.test-cov-check]
+cmd = "pytest --cov=test_copier_uv --cov-report=html:htmlcov --cov-report=term-missing --cov-fail-under=80"
+help = "Run tests with coverage"
+
+[tool.poe.tasks.test-cov-gen]
+cmd = "pytest --cov=test_copier_uv --cov-report=html:htmlcov --cov-report=term-missing"
+help = "Run tests to generate coverage report"
+
+# Multi Version Testing
+[tool.poe.tasks.test-py313]
+cmd = "pytest"
+help = "Run tests on Python 3.13"
+executor = { isolated = true, python = "3.13" }
+
+[tool.poe.tasks.clean]
+help = "Clean project directories using inline python"
+cmd = "python -c \"from poethepoet.scripts import rm; rm('.pytest_cache', '__pycache__', 'build', 'dist', 'htmlcov', '.mypy_cache', '.ruff_cache', 'public')\""
+
+# Agregate tasks
+[tool.poe.tasks.check]
+sequence = ["lint", "format-check", "type-check", "test-cov-check"]
+help = "Run all checks (linting, formatting, type checking)"
+
+[tool.poe.tasks.fix]
+sequence = ["lint-fix", "format"]
+help = "Fix linting and formatting issues"
+
+[tool.poe.tasks.test-pyall]
+parallel = [
+    "test-py313",
+]
+help = "Run tests on all supported Python versions"
+
+[tool.poe.tasks.security]
+sequence = ["security-bandit", "security-audit"]
+help = "Run all security checks"
+
+[tool.poe.tasks.docs]
+help = "Clean specific folders then build docs"
+sequence = [
+    { ref = "docs-clean" },
+    { ref = "docs-build" }
+]

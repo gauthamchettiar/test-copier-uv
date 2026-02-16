@@ -28,6 +28,20 @@ jobs:
       - name: Run Security Checks
         run: uv run poe security
 
+      - name: Check conventional commits
+        run: |
+          if [[ ${{ github.event_name }} == 'pull_request' ]]; then
+            BASE_SHA=${{ github.event.pull_request.base.sha }}
+          else
+            BASE_SHA=${{ github.event.before }}
+          fi
+          # Validate each commit message follows the conventional commit format
+          git log --format="%s" ${BASE_SHA}..${{ github.sha }} | while read -r msg; do
+            echo "Validating: $msg"
+            echo "$msg" > /tmp/commit_msg.text
+            conventional-pre-commit /tmp/commit_msg.text || exit 1
+          done
+
       - name: Check no diffs by pipeline
         run: git status --porcelain
 

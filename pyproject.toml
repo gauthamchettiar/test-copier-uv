@@ -125,6 +125,7 @@ venv = ".venv"
 [dependency-groups]
 dev = [
     "bandit>=1.9.3",
+    "conventional-commit>=0.2.8",
     "detect-secrets>=1.5.0",
     "pip-audit>=2.10.0",
     "poethepoet>=0.41.0",

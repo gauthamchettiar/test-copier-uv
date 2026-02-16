@@ -15,7 +15,7 @@ on:
       version:
         description: "Semantic version (e.g. 1.4.0, leave empty if using bump)"
         required: false
-    
+
       generate_release_notes:
         description: "Whether to generate release notes from the changelog"
         required: false
@@ -39,17 +39,17 @@ jobs:
         run: |
           BUMP="${{ github.event.inputs.bump }}"
           VERSION="${{ github.event.inputs.version }}"
-          
+
           if [[ -n "$BUMP" && -n "$VERSION" ]]; then
             echo "Error: Please provide either 'bump' or 'version', not both"
             exit 1
           fi
-          
+
           if [[ -z "$BUMP" && -z "$VERSION" ]]; then
             echo "Error: Please provide either 'bump' or 'version'"
             exit 1
           fi
-          
+
           if [[ -n "$VERSION" && ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "Error: Invalid semantic version format"
             exit 1
@@ -66,7 +66,7 @@ jobs:
         run: |
           BUMP="${{ github.event.inputs.bump }}"
           VERSION="${{ github.event.inputs.version }}"
-          
+
           if [[ -n "$VERSION" ]]; then
             # Use provided version with v prefix
             git-changelog --bump "v$VERSION"
@@ -74,11 +74,11 @@ jobs:
             # Use bump type
             git-changelog --bump "$BUMP"
           fi
-          
+
           # Get the bumped version
           NEW_VERSION=$(git-changelog --bumped-version)
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
-          
+
           # Update pyproject.toml with the new version
           sed -i "s/^version = .*/version = \"$NEW_VERSION\"/" pyproject.toml
 
@@ -91,7 +91,7 @@ jobs:
           git tag -a "v$NEW_VERSION" -m "Release v$NEW_VERSION"
           git push origin HEAD
           git push origin "v$NEW_VERSION"
-    
+
       - name: Generate release notes
         if: github.event.inputs.generate_release_notes == 'true'
         run: |
@@ -113,4 +113,3 @@ jobs:
           tag_name: v${{ env.NEW_VERSION }}
           body_path: ${{ steps.check_notes.outputs.release_notes_exists == 'true' && 'release-notes.md' || '' }}
           generate_release_notes: ${{ steps.check_notes.outputs.release_notes_exists == 'false' }}
-

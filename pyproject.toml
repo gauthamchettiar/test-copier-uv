@@ -105,7 +105,7 @@ output = "CHANGELOG.md"
 in-place = true
 parse-trailers = true
 parse-refs = false
-sections = ["feat", "fix", "refactor", "perf", "build", "deps"]
+sections = ["build", "chore", "ci", "deps", "docs", "feat", "fix", "perf", "refactor", "revert", "style", "test"]
 bump = "auto"
 
 [tool.pyright]

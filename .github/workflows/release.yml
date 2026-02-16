@@ -79,6 +79,8 @@ jobs:
 
           # Get the bumped version
           NEW_VERSION=$(git-changelog --bumped-version)
+          # Strip the 'v' prefix if present
+          NEW_VERSION=${NEW_VERSION#v}
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
 
           # Update pyproject.toml with the new version
